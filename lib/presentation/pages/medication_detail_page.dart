@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/medication_text_formatter.dart';
 import '../../domain/entities/medication.dart';
 import '../../l10n/app_localizations.dart';
 import '../cubit/favorites_cubit.dart';
+import '../../data/services/medication_translation_service.dart';
+import '../cubit/locale_cubit.dart';
 
 class MedicationDetailPage extends StatelessWidget {
   const MedicationDetailPage({
@@ -18,8 +21,17 @@ class MedicationDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    final isFavorite =
-        context.select<FavoritesCubit, bool>(
+    final languageCode = context.select<LocaleCubit, String>(
+      (cubit) => cubit.state.languageCode,
+    );
+
+    final translationFuture = languageCode == 'id'
+        ? context
+            .read<MedicationTranslationService>()
+            .translateToIndonesian(medication)
+        : Future<Map<String, String>>.value({});
+
+    final isFavorite = context.select<FavoritesCubit, bool>(
       (cubit) => cubit.isFavorite(medication.id),
     );
 
@@ -30,11 +42,18 @@ class MedicationDetailPage extends StatelessWidget {
         scrolledUnderElevation: 0,
         elevation: 0,
         leadingWidth: 40,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back, color: Colors.black, size: 29)),
-        title: const Text.rich(TextSpan(children: [
-          TextSpan(text: 'Medi', style: TextStyle(color: AppColors.brandMedi)),
-          TextSpan(text: 'Pedia', style: TextStyle(color: AppColors.brandPedia)),
-        ]), style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon:
+                const Icon(Icons.chevron_left, color: Colors.black, size: 29)),
+        title: const Text.rich(
+            TextSpan(children: [
+              TextSpan(
+                  text: 'Medi', style: TextStyle(color: AppColors.brandMedi)),
+              TextSpan(
+                  text: 'Pedia', style: TextStyle(color: AppColors.brandPedia)),
+            ]),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
         titleSpacing: 0,
       ),
       body: Column(
@@ -116,17 +135,28 @@ class _HeaderInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brand = MedicationTextFormatter.brandName(
+      medication.brandName,
+      l10n.unknown,
+    );
+    final generic = MedicationTextFormatter.titleCase(
+      medication.genericName,
+      l10n.unknown,
+    );
+    final manufacturer = MedicationTextFormatter.titleCase(
+      medication.manufacturerName,
+      l10n.unknown,
+    );
+
     return Row(
-      crossAxisAlignment:
-          CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-        width: 140,
-        height: 140,
+          width: 140,
+          height: 140,
           decoration: BoxDecoration(
             color: const Color(0xFFEAF8FC),
-            borderRadius:
-                BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(20),
           ),
           child: const Icon(
             Icons.medication_outlined,
@@ -137,36 +167,37 @@ class _HeaderInfo extends StatelessWidget {
         const SizedBox(width: 16),
         Expanded(
           child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                medication.brandName ??
-                    l10n.unknown,
+                brand,
                 style: const TextStyle(
-                fontSize: 17,
+                  fontSize: 17,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                medication.genericName ??
-                    l10n.unknown,
+                generic,
               ),
               const SizedBox(height: 4),
               Text(
-                medication.manufacturerName ??
-                    l10n.unknown,
+                manufacturer,
               ),
               const SizedBox(height: 5),
               TextButton.icon(
-                style: TextButton.styleFrom(backgroundColor: AppColors.detailFavorite, foregroundColor: Colors.black, padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 2), minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap),
-                onPressed: () => context.read<FavoritesCubit>().toggle(medication),
+                style: TextButton.styleFrom(
+                    backgroundColor: AppColors.detailFavorite,
+                    foregroundColor: Colors.black,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 9, vertical: 2),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                onPressed: () =>
+                    context.read<FavoritesCubit>().toggle(medication),
                 icon: Icon(
                   isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: isFavorite
-                      ? AppColors.brandMedi
-                      : Colors.black54,
+                  color: isFavorite ? AppColors.brandMedi : Colors.black54,
                   size: 23,
                 ),
                 label: Text(l10n.favorites),
@@ -195,8 +226,7 @@ class _Section extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 22),
       child: Column(
-        crossAxisAlignment:
-            CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             title,
@@ -207,10 +237,7 @@ class _Section extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            content == null ||
-                    content!.trim().isEmpty
-                ? fallback
-                : content!,
+            content == null || content!.trim().isEmpty ? fallback : content!,
             style: const TextStyle(
               fontWeight: FontWeight.w500,
               height: 1.5,

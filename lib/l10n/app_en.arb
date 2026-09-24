@@ -1,7 +1,8 @@
 {
   "appName": "MediPedia",
   "tagline": "Find. Check. Verify.",
-  "searchHint": "Search...",
+  "searchHint": "Search name or indications...",
+  "clearSearch": "Clear search",
   "brandName": "Brand Name",
   "genericName": "Generic Name",
   "manufacturer": "Manufacturer",
@@ -29,6 +30,18 @@
   "loadMore": "Loading more...",
   "disclaimer": "Information is provided for reference only and is not medical advice.",
   "language": "Language",
-  "english": "English",
-  "indonesian": "Indonesian"
+  "english": "ENG",
+  "indonesian": "IDN",
+  "filter": "Filter",
+  "filterTitle": "Choose preferences",
+  "close": "Close",
+  "drugType": "Drug type",
+  "dosageForm": "Dosage form",
+  "overTheCounter": "Over the counter",
+  "prescription": "Prescription",
+  "tablet": "Tablet",
+  "capsule": "Capsule",
+  "cream": "Cream",
+  "machineTranslationNotice": "Machine translated medical content. Switch to ENG to view the original.",
+  "translationUnavailable": "Translation is unavailable. Showing the original English text."
 }

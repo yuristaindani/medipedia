@@ -8,10 +8,13 @@ class AppLocalizationsId extends AppLocalizations {
   String get appName => 'MediPedia';
 
   @override
-  String get tagline => 'Find. Check. Verify.';
+  String get tagline => 'Temukan. Periksa. Pastikan.';
 
   @override
   String get searchHint => 'Cari...';
+
+  @override
+  String get clearSearch => 'Hapus pencarian';
 
   @override
   String get brandName => 'Nama Merek';
@@ -95,8 +98,44 @@ class AppLocalizationsId extends AppLocalizations {
   String get language => 'Bahasa';
 
   @override
-  String get english => 'Inggris';
+  String get english => 'ENG';
 
   @override
-  String get indonesian => 'Indonesia';
+  String get indonesian => 'IDN';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get filterTitle => 'Pilih Preferensi';
+
+  @override
+  String get close => 'Tutup';
+
+  @override
+  String get drugType => 'Jenis Obat';
+
+  @override
+  String get dosageForm => 'Bentuk Sediaan';
+
+  @override
+  String get overTheCounter => 'Obat Bebas';
+
+  @override
+  String get prescription => 'Obat Resep';
+
+  @override
+  String get tablet => 'Tablet';
+
+  @override
+  String get capsule => 'Kapsul';
+
+  @override
+  String get cream => 'Krim';
+
+  @override
+  String get machineTranslationNotice => 'Konten medis ini diterjemahkan otomatis. Pilih ENG untuk melihat teks aslinya.';
+
+  @override
+  String get translationUnavailable => 'Terjemahan tidak tersedia. Teks asli bahasa Inggris ditampilkan.';
 }

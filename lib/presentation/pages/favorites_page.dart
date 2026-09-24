@@ -21,7 +21,7 @@ class FavoritesPage extends StatelessWidget {
         scrolledUnderElevation: 0,
         elevation: 0,
         leadingWidth: 40,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back, color: Colors.black, size: 29)),
+        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.chevron_left, color: Colors.black, size: 29)),
         title: const Text.rich(TextSpan(children: [
           TextSpan(text: 'Medi', style: TextStyle(color: AppColors.brandMedi)),
           TextSpan(text: 'Pedia', style: TextStyle(color: AppColors.brandPedia)),

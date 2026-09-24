@@ -24,19 +24,31 @@ class OpenFdaRemoteDataSource {
     final queryParameters = <String, String>{
       'limit': '$limit',
       'skip': '$skip',
-      'sort': 'effective_time:desc',
     };
 
     final normalizedQuery = query.trim();
 
-    if (normalizedQuery.isNotEmpty) {
-      final safeQuery = normalizedQuery
+    if (normalizedQuery.isEmpty) {
+      queryParameters['sort'] = 'effective_time:desc';
+    } else {
+       final safeQuery = normalizedQuery
           .replaceAll('"', '')
-          .trim();
+          .trim()
+          .toLowerCase();
 
       queryParameters['search'] =
-          'openfda.brand_name:"$safeQuery"'
-          '+openfda.generic_name:"$safeQuery"';
+          'openfda.brand_name:$safeQuery* OR '
+          'openfda.generic_name:$safeQuery* OR '
+          'openfda.brand_name:*$safeQuery* OR '
+          'openfda.generic_name:*$safeQuery* OR '
+          'indications_and_usage:$safeQuery* OR '
+          'indications_and_usage:*$safeQuery* OR '
+          'indications_and_usage:"$safeQuery"';
+          // 'openfda.brand_name:$safeQuery*'
+          // '+openfda.generic_name:$safeQuery*'
+          // '+openfda.brand_name:*$safeQuery*'
+          // '+openfda.generic_name:*$safeQuery*'
+          // '+indications_and_usage:"$safeQuery"';
     }
 
     if (apiKey != null && apiKey!.isNotEmpty) {

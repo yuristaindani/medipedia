@@ -111,6 +111,9 @@ abstract class AppLocalizations {
   /// **'Search...'**
   String get searchHint;
 
+  /// Tooltip shown on the button that clears the search field.
+  String get clearSearch;
+
   /// No description provided for @brandName.
   ///
   /// In en, this message translates to:
@@ -276,14 +279,86 @@ abstract class AppLocalizations {
   /// No description provided for @english.
   ///
   /// In en, this message translates to:
-  /// **'English'**
+  /// **'ENG'**
   String get english;
 
   /// No description provided for @indonesian.
   ///
   /// In en, this message translates to:
-  /// **'Indonesian'**
+  /// **'IDN'**
   String get indonesian;
+
+  /// No description provided for @filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter'**
+  String get filter;
+
+  /// No description provided for @filterTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose preferences'**
+  String get filterTitle;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @drugType.
+  ///
+  /// In en, this message translates to:
+  /// **'Drug type'**
+  String get drugType;
+
+  /// No description provided for @dosageForm.
+  ///
+  /// In en, this message translates to:
+  /// **'Dosage form'**
+  String get dosageForm;
+
+  /// No description provided for @overTheCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'Over the counter'**
+  String get overTheCounter;
+
+  /// No description provided for @prescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Prescription'**
+  String get prescription;
+
+  /// No description provided for @tablet.
+  ///
+  /// In en, this message translates to:
+  /// **'Tablet'**
+  String get tablet;
+
+  /// No description provided for @capsule.
+  ///
+  /// In en, this message translates to:
+  /// **'Capsule'**
+  String get capsule;
+
+  /// No description provided for @cream.
+  ///
+  /// In en, this message translates to:
+  /// **'Cream'**
+  String get cream;
+
+  /// No description provided for @machineTranslationNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Machine translated medical content. Switch to ENG to view the original.'**
+  String get machineTranslationNotice;
+
+  /// No description provided for @translationUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation is unavailable. Showing the original English text.'**
+  String get translationUnavailable;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

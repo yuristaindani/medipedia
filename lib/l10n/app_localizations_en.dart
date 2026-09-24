@@ -14,6 +14,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchHint => 'Search...';
 
   @override
+  String get clearSearch => 'Clear search';
+
+  @override
   String get brandName => 'Brand Name';
 
   @override
@@ -95,8 +98,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get language => 'Language';
 
   @override
-  String get english => 'English';
+  String get english => 'ENG';
 
   @override
-  String get indonesian => 'Indonesian';
+  String get indonesian => 'IDN';
+
+  @override
+  String get filter => 'Filter';
+
+  @override
+  String get filterTitle => 'Choose preferences';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String get drugType => 'Drug type';
+
+  @override
+  String get dosageForm => 'Dosage form';
+
+  @override
+  String get overTheCounter => 'Over the counter';
+
+  @override
+  String get prescription => 'Prescription';
+
+  @override
+  String get tablet => 'Tablet';
+
+  @override
+  String get capsule => 'Capsule';
+
+  @override
+  String get cream => 'Cream';
+
+  @override
+  String get machineTranslationNotice => 'Machine translated medical content. Switch to ENG to view the original.';
+
+  @override
+  String get translationUnavailable => 'Translation is unavailable. Showing the original English text.';
 }

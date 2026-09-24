@@ -96,6 +96,27 @@ class MedicationCubit extends Cubit<MedicationState> {
     );
   }
 
+  List<Medication> _putUnnamedAtEnd(List<Medication> items) {
+    final named = <Medication>[];
+    final unnamed = <Medication>[];
+
+    for (final item in items) {
+      final hasAnyName = [
+        item.brandName,
+        item.genericName,
+        item.manufacturerName,
+      ].any((value) => value != null && value.trim().isNotEmpty);
+
+      if (hasAnyName) {
+        named.add(item);
+      } else {
+        unnamed.add(item);
+      }
+    }
+
+    return [...named, ...unnamed];
+  }
+
   void search(String value) {
     final query = value.trim();
 
@@ -200,10 +221,10 @@ class MedicationCubit extends Cubit<MedicationState> {
 
       emit(
         state.copyWith(
-          medications: [
+          medications: _putUnnamedAtEnd([
             ...state.medications,
             ...uniqueItems,
-          ],
+          ]),
           isLoadingMore: false,
           hasReachedEnd:
               nextItems.length < AppConstants.pageSize,
@@ -257,7 +278,7 @@ class MedicationCubit extends Cubit<MedicationState> {
       emit(
         MedicationState(
           status: MedicationStatus.success,
-          medications: items,
+          medications: _putUnnamedAtEnd(items),
           query: query,
           hasReachedEnd:
               items.length < AppConstants.pageSize,

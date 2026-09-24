@@ -1,7 +1,8 @@
 {
   "appName": "MediPedia",
-  "tagline": "Find. Check. Verify.",
-  "searchHint": "Cari...",
+  "tagline": "Temukan. Periksa. Pastikan.",
+  "searchHint": "Cari nama atau indikasi...",
+  "clearSearch": "Hapus pencarian",
   "brandName": "Nama Merek",
   "genericName": "Nama Generik",
   "manufacturer": "Produsen",
@@ -29,6 +30,18 @@
   "loadMore": "Memuat lebih banyak...",
   "disclaimer": "Informasi hanya untuk referensi dan bukan merupakan saran medis.",
   "language": "Bahasa",
-  "english": "Inggris",
-  "indonesian": "Indonesia"
+  "english": "ENG",
+  "indonesian": "IDN",
+  "filter": "Filter",
+  "filterTitle": "Pilih Preferensi",
+  "close": "Tutup",
+  "drugType": "Jenis Obat",
+  "dosageForm": "Bentuk Sediaan",
+  "overTheCounter": "Obat Bebas",
+  "prescription": "Obat Resep",
+  "tablet": "Tablet",
+  "capsule": "Kapsul",
+  "cream": "Krim",
+  "machineTranslationNotice": "Konten medis ini diterjemahkan otomatis. Pilih ENG untuk melihat teks aslinya.",
+  "translationUnavailable": "Terjemahan tidak tersedia. Teks asli bahasa Inggris ditampilkan."
 }

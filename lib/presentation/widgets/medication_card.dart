@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../core/utils/medication_text_formatter.dart';
 import '../../domain/entities/medication.dart';
 import '../../l10n/app_localizations.dart';
 import '../cubit/favorites_cubit.dart';
@@ -15,27 +16,19 @@ class MedicationCard extends StatelessWidget {
 
   final Medication medication;
 
-  String _display(String? value, String fallback) {
-    if (value == null || value.trim().isEmpty) {
-      return fallback;
-    }
-
-    return value.trim();
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    final brand = _display(
+    final brand = MedicationTextFormatter.brandName(
       medication.brandName,
       l10n.unknown,
     );
-    final generic = _display(
+    final generic = MedicationTextFormatter.titleCase(
       medication.genericName,
       l10n.unknown,
     );
-    final manufacturer = _display(
+    final manufacturer = MedicationTextFormatter.titleCase(
       medication.manufacturerName,
       l10n.unknown,
     );
@@ -46,8 +39,7 @@ class MedicationCard extends StatelessWidget {
 
     return Semantics(
       button: true,
-      label:
-          '${l10n.brandName}: $brand, '
+      label: '${l10n.brandName}: $brand, '
           '${l10n.genericName}: $generic, '
           '${l10n.manufacturer}: $manufacturer',
       child: Card(
@@ -107,9 +99,7 @@ class MedicationCard extends StatelessWidget {
                       ? l10n.removeFromFavorites
                       : l10n.addToFavorites,
                   onPressed: () {
-                    context
-                        .read<FavoritesCubit>()
-                        .toggle(medication);
+                    context.read<FavoritesCubit>().toggle(medication);
                   },
                   padding: const EdgeInsets.all(5),
                   constraints: const BoxConstraints(
@@ -117,12 +107,8 @@ class MedicationCard extends StatelessWidget {
                     minHeight: 42,
                   ),
                   icon: Icon(
-                    isFavorite
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: isFavorite
-                        ? AppColors.brandMedi
-                        : Colors.black54,
+                    isFavorite ? Icons.favorite : Icons.favorite_border,
+                    color: isFavorite ? AppColors.brandMedi : Colors.black54,
                     size: 27,
                   ),
                 ),
@@ -184,11 +170,11 @@ class _MedicationArtwork extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final shade = seed.hashCode.abs() % 3;
-    final icon = [
+    final icons = [
       Icons.medication_outlined,
       Icons.local_drink_outlined,
       Icons.medical_services_outlined,
-    ][shade];
+    ];
     final backgroundColors = [
       const Color(0xFFDCEAF1),
       const Color(0xFFF1F4F6),
@@ -203,7 +189,7 @@ class _MedicationArtwork extends StatelessWidget {
         borderRadius: BorderRadius.circular(21),
       ),
       child: Icon(
-        icon,
+        icons[shade],
         size: 62,
         color: const Color(0xFF7896A5),
       ),
