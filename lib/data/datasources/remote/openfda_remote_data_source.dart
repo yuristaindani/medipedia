@@ -44,11 +44,6 @@ class OpenFdaRemoteDataSource {
           'indications_and_usage:$safeQuery* OR '
           'indications_and_usage:*$safeQuery* OR '
           'indications_and_usage:"$safeQuery"';
-          // 'openfda.brand_name:$safeQuery*'
-          // '+openfda.generic_name:$safeQuery*'
-          // '+openfda.brand_name:*$safeQuery*'
-          // '+openfda.generic_name:*$safeQuery*'
-          // '+indications_and_usage:"$safeQuery"';
     }
 
     if (apiKey != null && apiKey!.isNotEmpty) {
