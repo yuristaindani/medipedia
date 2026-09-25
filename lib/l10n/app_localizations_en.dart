@@ -110,6 +110,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get filterTitle => 'Choose preferences';
 
   @override
+  String get clearFilters => 'Clear';
+
+  @override
   String get close => 'Close';
 
   @override
@@ -117,6 +120,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dosageForm => 'Dosage form';
+
+  @override
+  String get routeOfUse => 'How to use';
 
   @override
   String get overTheCounter => 'Over the counter';
@@ -134,7 +140,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cream => 'Cream';
 
   @override
-  String get machineTranslationNotice => 'Machine translated medical content. Switch to ENG to view the original.';
+  String get routeOral => 'Oral';
+  @override
+  String get routeTopical => 'Topical';
+  @override
+  String get routeCutaneous => 'Cutaneous';
+  @override
+  String get routeTransdermal => 'Transdermal';
+  @override
+  String get routeInhalation => 'Inhalation';
+  @override
+  String get routeOphthalmic => 'Eye';
+  @override
+  String get routeNasal => 'Nasal';
+  @override
+  String get routeIntravenous => 'Intravenous injection';
+  @override
+  String get routeIntramuscular => 'Intramuscular injection';
+  @override
+  String get routeSubcutaneous => 'Subcutaneous injection';
+  @override
+  String get routeRectal => 'Rectal';
 
   @override
   String get translationUnavailable => 'Translation is unavailable. Showing the original English text.';

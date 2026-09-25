@@ -1,6 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:medipedia/domain/entities/medication.dart';
+import 'package:medipedia/domain/entities/medication_filters.dart';
+import 'package:medipedia/domain/entities/medication_search_tier.dart';
 import 'package:medipedia/domain/repositories/medication_repository.dart';
 import 'package:medipedia/presentation/cubit/medication_cubit.dart';
 
@@ -39,6 +41,8 @@ class _FakeMedicationRepository implements MedicationRepository {
     String query = '',
     int skip = 0,
     int limit = 20,
+    MedicationFilters filters = MedicationFilters.empty,
+    MedicationSearchTier? searchTier,
   }) async {
     return items.skip(skip).take(limit).toList();
   }

@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 
 import '../../../core/constants/app_constants.dart';
 import '../../../core/error/app_exception.dart';
+import '../../../domain/entities/medication_filters.dart';
+import '../../../domain/entities/medication_search_tier.dart';
 import '../../models/medication_model.dart';
 
 class OpenFdaRemoteDataSource {
@@ -20,6 +22,8 @@ class OpenFdaRemoteDataSource {
     String query = '',
     int skip = 0,
     int limit = AppConstants.pageSize,
+    MedicationFilters filters = MedicationFilters.empty,
+    MedicationSearchTier? searchTier,
   }) async {
     final queryParameters = <String, String>{
       'limit': '$limit',
@@ -28,22 +32,70 @@ class OpenFdaRemoteDataSource {
 
     final normalizedQuery = query.trim();
 
-    if (normalizedQuery.isEmpty) {
-      queryParameters['sort'] = 'effective_time:desc';
-    } else {
-       final safeQuery = normalizedQuery
+    final searchClauses = <String>[];
+
+    if (normalizedQuery.isNotEmpty && searchTier == null) {
+      final safeQuery = normalizedQuery
           .replaceAll('"', '')
           .trim()
           .toLowerCase();
 
-      queryParameters['search'] =
-          'openfda.brand_name:$safeQuery* OR '
-          'openfda.generic_name:$safeQuery* OR '
-          'openfda.brand_name:*$safeQuery* OR '
-          'openfda.generic_name:*$safeQuery* OR '
-          'indications_and_usage:$safeQuery* OR '
-          'indications_and_usage:*$safeQuery* OR '
-          'indications_and_usage:"$safeQuery"';
+      searchClauses.add(
+        '(openfda.brand_name:$safeQuery* OR '
+        'openfda.generic_name:$safeQuery* OR '
+        'openfda.brand_name:*$safeQuery* OR '
+        'openfda.generic_name:*$safeQuery* OR '
+        'indications_and_usage:$safeQuery* OR '
+        'indications_and_usage:*$safeQuery* OR '
+        'indications_and_usage:"$safeQuery")',
+      );
+    }
+
+    if (normalizedQuery.isNotEmpty && searchTier != null) {
+      final safeQuery = normalizedQuery
+          .replaceAll('"', '')
+          .trim()
+          .toLowerCase();
+      final value = searchTier.isPrefix
+          ? '$safeQuery*'
+          : '*$safeQuery*';
+      searchClauses.add('${searchTier.field}:$value');
+    }
+
+    if (filters.productTypes.isNotEmpty) {
+      final productTypeQueries = filters.productTypes.map(
+        (value) => 'openfda.product_type:"$value"',
+      );
+      searchClauses.add(
+        '(${productTypeQueries.join(' OR ')})',
+      );
+    }
+
+    if (filters.routes.isNotEmpty) {
+      final routeQueries = filters.routes.map(
+        (value) => 'openfda.route:"$value"',
+      );
+      searchClauses.add(
+        '(${routeQueries.join(' OR ')})',
+      );
+    }
+
+    if (filters.dosageForms.isNotEmpty) {
+      final dosageFormQueries = filters.dosageForms.map(
+        (value) => 'dosage_forms_and_strengths:$value',
+      );
+      searchClauses.add(
+        '(${dosageFormQueries.join(' OR ')})',
+      );
+    }
+
+    if (searchClauses.isEmpty) {
+      queryParameters['sort'] = 'effective_time:desc';
+    } else {
+      queryParameters['search'] = searchClauses.join(' AND ');
+      if (normalizedQuery.isEmpty) {
+        queryParameters['sort'] = 'effective_time:desc';
+      }
     }
 
     if (apiKey != null && apiKey!.isNotEmpty) {
@@ -75,8 +127,7 @@ class OpenFdaRemoteDataSource {
           return _parseResponse(response.body);
         }
 
-        if (response.statusCode == 404 &&
-            normalizedQuery.isNotEmpty) {
+        if (response.statusCode == 404 && searchClauses.isNotEmpty) {
           return [];
         }
 

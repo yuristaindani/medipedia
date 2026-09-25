@@ -110,6 +110,9 @@ class AppLocalizationsId extends AppLocalizations {
   String get filterTitle => 'Pilih Preferensi';
 
   @override
+  String get clearFilters => 'Hapus filter';
+
+  @override
   String get close => 'Tutup';
 
   @override
@@ -117,6 +120,9 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get dosageForm => 'Bentuk Sediaan';
+
+  @override
+  String get routeOfUse => 'Cara Penggunaan';
 
   @override
   String get overTheCounter => 'Obat Bebas';
@@ -134,7 +140,27 @@ class AppLocalizationsId extends AppLocalizations {
   String get cream => 'Krim';
 
   @override
-  String get machineTranslationNotice => 'Konten medis ini diterjemahkan otomatis. Pilih ENG untuk melihat teks aslinya.';
+  String get routeOral => 'Oral';
+  @override
+  String get routeTopical => 'Topikal';
+  @override
+  String get routeCutaneous => 'Pada kulit';
+  @override
+  String get routeTransdermal => 'Transdermal';
+  @override
+  String get routeInhalation => 'Inhalasi';
+  @override
+  String get routeOphthalmic => 'Mata';
+  @override
+  String get routeNasal => 'Hidung';
+  @override
+  String get routeIntravenous => 'Injeksi intravena';
+  @override
+  String get routeIntramuscular => 'Injeksi intramuskular';
+  @override
+  String get routeSubcutaneous => 'Injeksi subkutan';
+  @override
+  String get routeRectal => 'Rektal';
 
   @override
   String get translationUnavailable => 'Terjemahan tidak tersedia. Teks asli bahasa Inggris ditampilkan.';

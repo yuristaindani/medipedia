@@ -239,8 +239,13 @@ class _Header extends StatelessWidget {
               const SizedBox(width: 8),
               IconButton(
                 tooltip: l10n.filter,
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const FilterPage()),
+                onPressed: () => showDialog<void>(
+                  context: context,
+                  useSafeArea: false,
+                  barrierDismissible: false,
+                  builder: (_) => const Dialog.fullscreen(
+                    child: FilterPage(),
+                  ),
                 ),
                 icon: const Icon(Icons.tune, color: Colors.black, size: 28),
                 visualDensity: VisualDensity.compact,

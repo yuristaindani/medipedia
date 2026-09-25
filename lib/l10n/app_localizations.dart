@@ -300,6 +300,9 @@ abstract class AppLocalizations {
   /// **'Choose preferences'**
   String get filterTitle;
 
+  /// Label for clearing all selected filters.
+  String get clearFilters;
+
   /// No description provided for @close.
   ///
   /// In en, this message translates to:
@@ -317,6 +320,9 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dosage form'**
   String get dosageForm;
+
+  /// No description provided for @routeOfUse.
+  String get routeOfUse;
 
   /// No description provided for @overTheCounter.
   ///
@@ -348,11 +354,17 @@ abstract class AppLocalizations {
   /// **'Cream'**
   String get cream;
 
-  /// No description provided for @machineTranslationNotice.
-  ///
-  /// In en, this message translates to:
-  /// **'Machine translated medical content. Switch to ENG to view the original.'**
-  String get machineTranslationNotice;
+  String get routeOral;
+  String get routeTopical;
+  String get routeCutaneous;
+  String get routeTransdermal;
+  String get routeInhalation;
+  String get routeOphthalmic;
+  String get routeNasal;
+  String get routeIntravenous;
+  String get routeIntramuscular;
+  String get routeSubcutaneous;
+  String get routeRectal;
 
   /// No description provided for @translationUnavailable.
   ///

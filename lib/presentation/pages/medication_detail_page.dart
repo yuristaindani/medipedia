@@ -90,27 +90,22 @@ class MedicationDetailPage extends StatelessWidget {
                   _Section(
                     title: l10n.indications,
                     content: medication.indicationsAndUsage,
-                    fallback: l10n.unknown,
-                  ),
-                  _Section(
-                    title: l10n.activeIngredients,
-                    content: medication.activeIngredient,
-                    fallback: l10n.unknown,
-                  ),
-                  _Section(
-                    title: l10n.dosage,
-                    content: medication.dosageAndAdministration,
-                    fallback: l10n.unknown,
-                  ),
-                  _Section(
-                    title: l10n.warnings,
-                    content: medication.warnings,
-                    fallback: l10n.unknown,
                   ),
                   _Section(
                     title: l10n.purpose,
                     content: medication.purpose,
-                    fallback: l10n.unknown,
+                  ),
+                  _Section(
+                    title: l10n.activeIngredients,
+                    content: medication.activeIngredient,
+                  ),
+                  _Section(
+                    title: l10n.dosage,
+                    content: medication.dosageAndAdministration,
+                  ),
+                  _Section(
+                    title: l10n.warnings,
+                    content: medication.warnings,
                   ),
                 ],
               ),
@@ -214,15 +209,18 @@ class _Section extends StatelessWidget {
   const _Section({
     required this.title,
     required this.content,
-    required this.fallback,
   });
 
   final String title;
   final String? content;
-  final String fallback;
 
   @override
   Widget build(BuildContext context) {
+    final text = content?.trim();
+    if (text == null || text.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 22),
       child: Column(
@@ -237,7 +235,7 @@ class _Section extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            content == null || content!.trim().isEmpty ? fallback : content!,
+            text,
             style: const TextStyle(
               fontWeight: FontWeight.w500,
               height: 1.5,
