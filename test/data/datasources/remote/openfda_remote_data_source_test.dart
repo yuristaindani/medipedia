@@ -65,6 +65,7 @@ void main() {
     test('retries a 429 response and succeeds without calling live API',
         () async {
       var requestCount = 0;
+      final observedDelays = <Duration>[];
       final client = MockClient((_) async {
         requestCount++;
 
@@ -72,18 +73,55 @@ void main() {
           return http.Response(
             '{}',
             429,
-            headers: const {'retry-after': '0'},
+            headers: const {'retry-after': '4'},
           );
+        }
+
+        if (requestCount == 2) {
+          return http.Response('{}', 429);
         }
 
         return http.Response('{"results":[]}', 200);
       });
-      final dataSource = OpenFdaRemoteDataSource(client: client);
+      final dataSource = OpenFdaRemoteDataSource(
+        client: client,
+        delay: (duration) async => observedDelays.add(duration),
+      );
 
       final medications = await dataSource.getMedications(limit: 1);
 
       expect(medications, isEmpty);
-      expect(requestCount, 2);
+      expect(requestCount, 3);
+      expect(
+        observedDelays,
+        const [Duration(seconds: 4), Duration(seconds: 2)],
+      );
+
+      client.close();
+    });
+
+    test('maps exhausted 429 retries to a rate-limit exception', () async {
+      var requestCount = 0;
+      final client = MockClient((_) async {
+        requestCount++;
+        return http.Response('{}', 429);
+      });
+      final dataSource = OpenFdaRemoteDataSource(
+        client: client,
+        delay: (_) async {},
+      );
+
+      await expectLater(
+        dataSource.getMedications(limit: 1),
+        throwsA(
+          isA<AppException>().having(
+            (error) => error.type,
+            'type',
+            AppErrorType.rateLimit,
+          ),
+        ),
+      );
+      expect(requestCount, 3);
 
       client.close();
     });

@@ -9,14 +9,22 @@ import '../../../domain/entities/medication_filters.dart';
 import '../../../domain/entities/medication_search_tier.dart';
 import '../../models/medication_model.dart';
 
+typedef RetryDelay = Future<void> Function(Duration duration);
+
 class OpenFdaRemoteDataSource {
   OpenFdaRemoteDataSource({
     required http.Client client,
     this.apiKey,
-  }) : _client = client;
+    RetryDelay? delay,
+  })  : _client = client,
+        _delay = delay ?? _defaultDelay;
 
   final http.Client _client;
   final String? apiKey;
+  final RetryDelay _delay;
+
+  static Future<void> _defaultDelay(Duration duration) =>
+      Future<void>.delayed(duration);
 
   Future<List<MedicationModel>> getMedications({
     String query = '',
@@ -144,7 +152,7 @@ class OpenFdaRemoteDataSource {
               ) ??
                   (attempt + 1);
 
-          await Future<void>.delayed(
+          await _delay(
             Duration(seconds: retryAfter.clamp(1, 5)),
           );
 
