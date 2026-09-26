@@ -37,16 +37,15 @@ class _FilterPageState extends State<FilterPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final categories = <String, String>{
       'drugType': l10n.drugType,
       'dosageForm': l10n.dosageForm,
       'route': l10n.routeOfUse,
     };
-    final sidebarWidth =
-        (MediaQuery.of(context).size.width * 0.4)
-            .clamp(130.0, 154.0)
-            .toDouble();
+    final sidebarWidth = (MediaQuery.of(context).size.width * 0.4)
+        .clamp(130.0, 154.0)
+        .toDouble();
 
     return Scaffold(
       body: SafeArea(
@@ -223,7 +222,7 @@ class _FilterPageState extends State<FilterPage> {
   }
 
   Map<String, String> _choicesFor(BuildContext context, String section) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     switch (section) {
       case 'drugType':

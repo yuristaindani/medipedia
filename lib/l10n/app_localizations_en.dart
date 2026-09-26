@@ -11,7 +11,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagline => 'Find. Check. Verify.';
 
   @override
-  String get searchHint => 'Search...';
+  String get searchHint => 'Search name or indications...';
 
   @override
   String get clearSearch => 'Clear search';
@@ -141,27 +141,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get routeOral => 'Oral';
+
   @override
   String get routeTopical => 'Topical';
+
   @override
   String get routeCutaneous => 'Cutaneous';
+
   @override
   String get routeTransdermal => 'Transdermal';
+
   @override
   String get routeInhalation => 'Inhalation';
+
   @override
   String get routeOphthalmic => 'Eye';
+
   @override
   String get routeNasal => 'Nasal';
+
   @override
   String get routeIntravenous => 'Intravenous injection';
+
   @override
   String get routeIntramuscular => 'Intramuscular injection';
+
   @override
   String get routeSubcutaneous => 'Subcutaneous injection';
+
   @override
   String get routeRectal => 'Rectal';
 
   @override
-  String get translationUnavailable => 'Translation is unavailable. Showing the original English text.';
+  String get translationUnavailable => 'Some content is shown in its original language because it could not be translated.';
 }

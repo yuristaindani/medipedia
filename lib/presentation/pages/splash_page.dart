@@ -44,7 +44,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -71,21 +71,28 @@ class _SplashPageState extends State<SplashPage> {
                     height: 52,
                     fit: BoxFit.contain,
                   ),
-                  SizedBox(height: 1),
-                  Text.rich(
-                      TextSpan(children: [
+                  const SizedBox(height: 1),
+                  const Text.rich(
+                    TextSpan(
+                      children: [
                         TextSpan(
-                            text: 'Medi',
-                            style: TextStyle(
-                                color: Color(0xFF008FC1),
-                                fontWeight: FontWeight.w700)),
+                          text: 'Medi',
+                          style: TextStyle(
+                            color: Color(0xFF008FC1),
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
                         TextSpan(
-                            text: 'Pedia',
-                            style: TextStyle(
-                                color: Color(0xFF171717),
-                                fontWeight: FontWeight.w500)),
-                      ]),
-                      style: TextStyle(fontSize: 22)),
+                          text: 'Pedia',
+                          style: TextStyle(
+                            color: Color(0xFF171717),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                    style: TextStyle(fontSize: 22),
+                  ),
                 ],
               ),
             ),

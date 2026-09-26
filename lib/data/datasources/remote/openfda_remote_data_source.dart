@@ -43,10 +43,8 @@ class OpenFdaRemoteDataSource {
     final searchClauses = <String>[];
 
     if (normalizedQuery.isNotEmpty && searchTier == null) {
-      final safeQuery = normalizedQuery
-          .replaceAll('"', '')
-          .trim()
-          .toLowerCase();
+      final safeQuery =
+          normalizedQuery.replaceAll('"', '').trim().toLowerCase();
 
       searchClauses.add(
         '(openfda.brand_name:$safeQuery* OR '
@@ -60,13 +58,9 @@ class OpenFdaRemoteDataSource {
     }
 
     if (normalizedQuery.isNotEmpty && searchTier != null) {
-      final safeQuery = normalizedQuery
-          .replaceAll('"', '')
-          .trim()
-          .toLowerCase();
-      final value = searchTier.isPrefix
-          ? '$safeQuery*'
-          : '*$safeQuery*';
+      final safeQuery =
+          normalizedQuery.replaceAll('"', '').trim().toLowerCase();
+      final value = searchTier.isPrefix ? '$safeQuery*' : '*$safeQuery*';
       searchClauses.add('${searchTier.field}:$value');
     }
 
@@ -118,18 +112,16 @@ class OpenFdaRemoteDataSource {
 
     for (var attempt = 0; attempt < 3; attempt++) {
       try {
-        final response = await _client
-            .get(
-              uri,
-              headers: const {
-                'Accept': 'application/json',
-              },
-            )
-            .timeout(
-              const Duration(
-                seconds: AppConstants.requestTimeoutSeconds,
-              ),
-            );
+        final response = await _client.get(
+          uri,
+          headers: const {
+            'Accept': 'application/json',
+          },
+        ).timeout(
+          const Duration(
+            seconds: AppConstants.requestTimeoutSeconds,
+          ),
+        );
 
         if (response.statusCode == 200) {
           return _parseResponse(response.body);
@@ -146,11 +138,10 @@ class OpenFdaRemoteDataSource {
             );
           }
 
-          final retryAfter =
-              int.tryParse(
+          final retryAfter = int.tryParse(
                 response.headers['retry-after'] ?? '',
               ) ??
-                  (attempt + 1);
+              (attempt + 1);
 
           await _delay(
             Duration(seconds: retryAfter.clamp(1, 5)),
@@ -199,10 +190,6 @@ class OpenFdaRemoteDataSource {
       }
 
       final rawResults = decoded['results'];
-
-      if (rawResults == null) {
-        return [];
-      }
 
       if (rawResults is! List) {
         throw const FormatException();

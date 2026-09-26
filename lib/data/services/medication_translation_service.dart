@@ -2,13 +2,20 @@ import 'package:google_mlkit_translation/google_mlkit_translation.dart';
 
 import '../../domain/entities/medication.dart';
 
-/// Translates only the four selected OpenFDA label sections on the device.
-class MedicationTranslationService {
+abstract interface class MedicationContentTranslator {
+  Future<Map<String, String>> translateToIndonesian(
+    Medication medication,
+  );
+}
+
+/// Translates selected OpenFDA label sections on the device.
+class MedicationTranslationService implements MedicationContentTranslator {
   final OnDeviceTranslatorModelManager _modelManager =
       OnDeviceTranslatorModelManager();
 
   final Map<String, Future<Map<String, String>>> _cache = {};
 
+  @override
   Future<Map<String, String>> translateToIndonesian(
     Medication medication,
   ) async {
@@ -18,6 +25,7 @@ class MedicationTranslationService {
       medication.dosageAndAdministration,
       medication.warnings,
       medication.purpose,
+      medication.activeIngredient,
     ).toString();
 
     final cached = _cache[cacheKey];
@@ -39,6 +47,18 @@ class MedicationTranslationService {
   Future<Map<String, String>> _translate(
     Medication medication,
   ) async {
+    final hasTranslatableText = [
+      medication.indicationsAndUsage,
+      medication.purpose,
+      medication.activeIngredient,
+      medication.dosageAndAdministration,
+      medication.warnings,
+    ].any((value) => value != null && value.trim().isNotEmpty);
+
+    if (!hasTranslatableText) {
+      return const {};
+    }
+
     await _ensureModelDownloaded(TranslateLanguage.english);
     await _ensureModelDownloaded(TranslateLanguage.indonesian);
 
@@ -55,6 +75,12 @@ class MedicationTranslationService {
         translations,
         'indicationsAndUsage',
         medication.indicationsAndUsage,
+      );
+      await _translateField(
+        translator,
+        translations,
+        'activeIngredient',
+        medication.activeIngredient,
       );
       await _translateField(
         translator,

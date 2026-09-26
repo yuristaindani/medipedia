@@ -86,7 +86,11 @@ Future<FavoritesCubit> loadedFavoritesCubit({
 }
 
 Future<LocaleCubit> englishLocaleCubit() async {
-  SharedPreferences.setMockInitialValues({});
+  return localeCubitFor('en');
+}
+
+Future<LocaleCubit> localeCubitFor(String languageCode) async {
+  SharedPreferences.setMockInitialValues({'app_language': languageCode});
   return LocaleCubit(await SharedPreferences.getInstance());
 }
 
@@ -97,7 +101,7 @@ Widget localizedTestApp({
   LocaleCubit? localeCubit,
 }) {
   Widget child = MaterialApp(
-    locale: const Locale('en'),
+    locale: localeCubit?.state ?? const Locale('en'),
     theme: AppTheme.light(),
     localizationsDelegates: const [
       AppLocalizations.delegate,

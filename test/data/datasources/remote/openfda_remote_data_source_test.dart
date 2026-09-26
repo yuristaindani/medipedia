@@ -62,6 +62,24 @@ void main() {
       client.close();
     });
 
+    test('maps a successful but incomplete response to invalid data', () async {
+      final client = MockClient((_) async => http.Response('{}', 200));
+      final dataSource = OpenFdaRemoteDataSource(client: client);
+
+      await expectLater(
+        dataSource.getMedications(limit: 1),
+        throwsA(
+          isA<AppException>().having(
+            (error) => error.type,
+            'type',
+            AppErrorType.invalidData,
+          ),
+        ),
+      );
+
+      client.close();
+    });
+
     test('retries a 429 response and succeeds without calling live API',
         () async {
       var requestCount = 0;

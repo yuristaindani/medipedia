@@ -19,7 +19,7 @@ class MedicationDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     final languageCode = context.select<LocaleCubit, String>(
       (cubit) => cubit.state.languageCode,
@@ -27,7 +27,7 @@ class MedicationDetailPage extends StatelessWidget {
 
     final translationFuture = languageCode == 'id'
         ? context
-            .read<MedicationTranslationService>()
+            .read<MedicationContentTranslator>()
             .translateToIndonesian(medication)
         : Future<Map<String, String>>.value({});
 
@@ -87,25 +87,11 @@ class MedicationDetailPage extends StatelessWidget {
                     isFavorite: isFavorite,
                   ),
                   const SizedBox(height: 20),
-                  _Section(
-                    title: l10n.indications,
-                    content: medication.indicationsAndUsage,
-                  ),
-                  _Section(
-                    title: l10n.purpose,
-                    content: medication.purpose,
-                  ),
-                  _Section(
-                    title: l10n.activeIngredients,
-                    content: medication.activeIngredient,
-                  ),
-                  _Section(
-                    title: l10n.dosage,
-                    content: medication.dosageAndAdministration,
-                  ),
-                  _Section(
-                    title: l10n.warnings,
-                    content: medication.warnings,
+                  _LocalizedMedicationSections(
+                    medication: medication,
+                    l10n: l10n,
+                    languageCode: languageCode,
+                    translationFuture: translationFuture,
                   ),
                 ],
               ),
@@ -115,6 +101,103 @@ class MedicationDetailPage extends StatelessWidget {
       ),
     );
   }
+}
+
+class _LocalizedMedicationSections extends StatelessWidget {
+  const _LocalizedMedicationSections({
+    required this.medication,
+    required this.l10n,
+    required this.languageCode,
+    required this.translationFuture,
+  });
+
+  final Medication medication;
+  final AppLocalizations l10n;
+  final String languageCode;
+  final Future<Map<String, String>> translationFuture;
+
+  Map<String, String?> get _source => {
+        'indicationsAndUsage': medication.indicationsAndUsage,
+        'purpose': medication.purpose,
+        'activeIngredient': medication.activeIngredient,
+        'dosageAndAdministration': medication.dosageAndAdministration,
+        'warnings': medication.warnings,
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    if (languageCode != 'id') {
+      return _sections(_source);
+    }
+
+    return FutureBuilder<Map<String, String>>(
+      future: translationFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Padding(
+            padding: EdgeInsets.symmetric(vertical: 28),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        final translated = snapshot.data ?? const <String, String>{};
+        var hasFallback = snapshot.hasError;
+        final displayed = <String, String?>{};
+        for (final entry in _source.entries) {
+          final sourceText = entry.value;
+          if (sourceText == null || sourceText.trim().isEmpty) {
+            displayed[entry.key] = sourceText;
+            continue;
+          }
+
+          final translatedText = translated[entry.key]?.trim();
+          if (translatedText == null || translatedText.isEmpty) {
+            hasFallback = true;
+            // Keep the source available and explain the language fallback
+            // with the single localized notice below.
+            displayed[entry.key] = sourceText;
+          } else {
+            displayed[entry.key] = translatedText;
+          }
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (hasFallback)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Text(
+                  l10n.translationUnavailable,
+                  style: const TextStyle(color: Colors.black54),
+                ),
+              ),
+            _sections(displayed),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _sections(Map<String, String?> content) => Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _Section(
+            title: l10n.indications,
+            content: content['indicationsAndUsage'],
+          ),
+          _Section(title: l10n.purpose, content: content['purpose']),
+          _Section(
+            title: l10n.activeIngredients,
+            content: content['activeIngredient'],
+          ),
+          _Section(
+            title: l10n.dosage,
+            content: content['dosageAndAdministration'],
+          ),
+          _Section(title: l10n.warnings, content: content['warnings']),
+        ],
+      );
 }
 
 class _HeaderInfo extends StatelessWidget {

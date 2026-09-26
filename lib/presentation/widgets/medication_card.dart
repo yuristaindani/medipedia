@@ -18,7 +18,7 @@ class MedicationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     final brand = MedicationTextFormatter.brandName(
       medication.brandName,
@@ -139,7 +139,7 @@ class _LabeledValue extends StatelessWidget {
         children: [
           TextSpan(
             text: '$label: ',
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
             ),

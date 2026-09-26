@@ -64,8 +64,8 @@ abstract class AppLocalizations {
 
   final String localeName;
 
-  static AppLocalizations of(BuildContext context) {
-    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  static AppLocalizations? of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate = _AppLocalizationsDelegate();
@@ -108,10 +108,13 @@ abstract class AppLocalizations {
   /// No description provided for @searchHint.
   ///
   /// In en, this message translates to:
-  /// **'Search...'**
+  /// **'Search name or indications...'**
   String get searchHint;
 
-  /// Tooltip shown on the button that clears the search field.
+  /// No description provided for @clearSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
   String get clearSearch;
 
   /// No description provided for @brandName.
@@ -300,7 +303,10 @@ abstract class AppLocalizations {
   /// **'Choose preferences'**
   String get filterTitle;
 
-  /// Label for clearing all selected filters.
+  /// No description provided for @clearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
   String get clearFilters;
 
   /// No description provided for @close.
@@ -322,6 +328,9 @@ abstract class AppLocalizations {
   String get dosageForm;
 
   /// No description provided for @routeOfUse.
+  ///
+  /// In en, this message translates to:
+  /// **'How to use'**
   String get routeOfUse;
 
   /// No description provided for @overTheCounter.
@@ -354,22 +363,76 @@ abstract class AppLocalizations {
   /// **'Cream'**
   String get cream;
 
+  /// No description provided for @routeOral.
+  ///
+  /// In en, this message translates to:
+  /// **'Oral'**
   String get routeOral;
+
+  /// No description provided for @routeTopical.
+  ///
+  /// In en, this message translates to:
+  /// **'Topical'**
   String get routeTopical;
+
+  /// No description provided for @routeCutaneous.
+  ///
+  /// In en, this message translates to:
+  /// **'Cutaneous'**
   String get routeCutaneous;
+
+  /// No description provided for @routeTransdermal.
+  ///
+  /// In en, this message translates to:
+  /// **'Transdermal'**
   String get routeTransdermal;
+
+  /// No description provided for @routeInhalation.
+  ///
+  /// In en, this message translates to:
+  /// **'Inhalation'**
   String get routeInhalation;
+
+  /// No description provided for @routeOphthalmic.
+  ///
+  /// In en, this message translates to:
+  /// **'Eye'**
   String get routeOphthalmic;
+
+  /// No description provided for @routeNasal.
+  ///
+  /// In en, this message translates to:
+  /// **'Nasal'**
   String get routeNasal;
+
+  /// No description provided for @routeIntravenous.
+  ///
+  /// In en, this message translates to:
+  /// **'Intravenous injection'**
   String get routeIntravenous;
+
+  /// No description provided for @routeIntramuscular.
+  ///
+  /// In en, this message translates to:
+  /// **'Intramuscular injection'**
   String get routeIntramuscular;
+
+  /// No description provided for @routeSubcutaneous.
+  ///
+  /// In en, this message translates to:
+  /// **'Subcutaneous injection'**
   String get routeSubcutaneous;
+
+  /// No description provided for @routeRectal.
+  ///
+  /// In en, this message translates to:
+  /// **'Rectal'**
   String get routeRectal;
 
   /// No description provided for @translationUnavailable.
   ///
   /// In en, this message translates to:
-  /// **'Translation is unavailable. Showing the original English text.'**
+  /// **'Some content is shown in its original language because it could not be translated.'**
   String get translationUnavailable;
 }
 

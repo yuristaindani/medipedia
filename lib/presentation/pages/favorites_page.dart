@@ -12,7 +12,7 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
@@ -21,19 +21,23 @@ class FavoritesPage extends StatelessWidget {
         scrolledUnderElevation: 0,
         elevation: 0,
         leadingWidth: 40,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.chevron_left, color: Colors.black, size: 29)),
-        title: const Text.rich(TextSpan(children: [
-          TextSpan(text: 'Medi', style: TextStyle(color: AppColors.brandMedi)),
-          TextSpan(text: 'Pedia', style: TextStyle(color: AppColors.brandPedia)),
-        ]), style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
+        leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon:
+                const Icon(Icons.chevron_left, color: Colors.black, size: 29)),
+        title: const Text.rich(
+            TextSpan(children: [
+              TextSpan(
+                  text: 'Medi', style: TextStyle(color: AppColors.brandMedi)),
+              TextSpan(
+                  text: 'Pedia', style: TextStyle(color: AppColors.brandPedia)),
+            ]),
+            style: TextStyle(fontSize: 19, fontWeight: FontWeight.w500)),
         titleSpacing: 0,
       ),
-      body: BlocBuilder<
-          FavoritesCubit,
-          FavoritesState>(
+      body: BlocBuilder<FavoritesCubit, FavoritesState>(
         builder: (context, state) {
-          if (state.isLoading &&
-              state.medications.isEmpty) {
+          if (state.isLoading && state.medications.isEmpty) {
             return const Center(
               child: CircularProgressIndicator(),
             );
@@ -50,8 +54,7 @@ class FavoritesPage extends StatelessWidget {
             itemCount: state.medications.length,
             itemBuilder: (context, index) {
               return MedicationCard(
-                medication:
-                    state.medications[index],
+                medication: state.medications[index],
               );
             },
           );

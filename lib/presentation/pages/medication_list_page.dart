@@ -56,7 +56,7 @@ class _MedicationListPageState extends State<MedicationListPage> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: SafeArea(
@@ -78,29 +78,37 @@ class _MedicationListPageState extends State<MedicationListPage> {
 
                   if (state.status == MedicationStatus.failure &&
                       state.medications.isEmpty) {
-                    return AppErrorView(
-                      message: _errorMessage(
-                        context,
-                        state.errorType,
+                    return _refreshableState(
+                      context,
+                      AppErrorView(
+                        message: _errorMessage(
+                          context,
+                          state.errorType,
+                        ),
+                        retryLabel: l10n.retry,
+                        onRetry: () {
+                          context.read<MedicationCubit>().loadInitial();
+                        },
                       ),
-                      retryLabel: l10n.retry,
-                      onRetry: () {
-                        context.read<MedicationCubit>().loadInitial();
-                      },
                     );
                   }
 
                   if (state.needsMoreCharacters) {
-                    return AppEmptyView(
-                      message: l10n.searchTooShort,
+                    return _refreshableState(
+                      context,
+                      AppEmptyView(message: l10n.searchTooShort),
                     );
                   }
 
                   if (state.medications.isEmpty) {
-                    return AppEmptyView(
-                      message: l10n.emptyMedications,
+                    return _refreshableState(
+                      context,
+                      AppEmptyView(message: l10n.emptyMedications),
                     );
                   }
+
+                  final hasPaginationFooter =
+                      state.isLoadingMore || state.errorType != null;
 
                   return RefreshIndicator(
                     onRefresh: context.read<MedicationCubit>().refresh,
@@ -109,13 +117,25 @@ class _MedicationListPageState extends State<MedicationListPage> {
                       physics: const AlwaysScrollableScrollPhysics(),
                       padding: const EdgeInsets.fromLTRB(12, 4, 12, 24),
                       itemCount: state.medications.length +
-                          (state.isLoadingMore ? 1 : 0),
+                          (hasPaginationFooter ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (index >= state.medications.length) {
-                          return const Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Center(
-                              child: CircularProgressIndicator(),
+                          if (state.isLoadingMore) {
+                            return const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            child: _LoadMoreErrorFooter(
+                              message: _errorMessage(context, state.errorType),
                             ),
                           );
                         }
@@ -137,11 +157,26 @@ class _MedicationListPageState extends State<MedicationListPage> {
     );
   }
 
+  Widget _refreshableState(BuildContext context, Widget content) {
+    return RefreshIndicator(
+      onRefresh: context.read<MedicationCubit>().refresh,
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        children: [
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.65,
+            child: content,
+          ),
+        ],
+      ),
+    );
+  }
+
   String _errorMessage(
     BuildContext context,
     AppErrorType? type,
   ) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     switch (type) {
       case AppErrorType.network:
@@ -159,6 +194,30 @@ class _MedicationListPageState extends State<MedicationListPage> {
   }
 }
 
+class _LoadMoreErrorFooter extends StatelessWidget {
+  const _LoadMoreErrorFooter({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      children: [
+        Text(
+          message,
+          textAlign: TextAlign.center,
+        ),
+        TextButton(
+          onPressed: () => context.read<MedicationCubit>().loadMore(),
+          child: Text(l10n.retry),
+        ),
+      ],
+    );
+  }
+}
+
 class _Header extends StatelessWidget {
   const _Header({
     required this.searchController,
@@ -169,7 +228,7 @@ class _Header extends StatelessWidget {
   final ValueChanged<String> onSearchChanged;
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 18),
@@ -251,7 +310,7 @@ class _Header extends StatelessWidget {
                 visualDensity: VisualDensity.compact,
               ),
               IconButton(
-                tooltip: AppLocalizations.of(context).favorites,
+                tooltip: AppLocalizations.of(context)!.favorites,
                 onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(builder: (_) => const FavoritesPage())),
                 icon: const Icon(Icons.favorite_border, color: Colors.black),
@@ -269,7 +328,7 @@ class _BrandHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Row(
       children: [

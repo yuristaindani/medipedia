@@ -60,7 +60,7 @@ class MediPediaApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<MedicationTranslationService>(
+    return RepositoryProvider<MedicationContentTranslator>(
       create: (_) => MedicationTranslationService(),
       child: MultiBlocProvider(
         providers: [
@@ -83,7 +83,8 @@ class MediPediaApp extends StatelessWidget {
             return MaterialApp(
               locale: locale,
               debugShowCheckedModeBanner: false,
-              title: 'MediPedia',
+              onGenerateTitle: (context) =>
+                  AppLocalizations.of(context)!.appName,
               theme: AppTheme.light(),
               localizationsDelegates: const [
                 AppLocalizations.delegate,

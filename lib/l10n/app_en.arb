@@ -55,5 +55,5 @@
   "routeIntramuscular": "Intramuscular injection",
   "routeSubcutaneous": "Subcutaneous injection",
   "routeRectal": "Rectal",
-  "translationUnavailable": "Translation is unavailable. Showing the original English text."
+  "translationUnavailable": "Some content is shown in its original language because it could not be translated."
 }

@@ -16,7 +16,7 @@ void main() {
   blocTest<MedicationCubit, MedicationState>(
     'emits loading then success when the repository returns medications',
     build: () => MedicationCubit(
-      _FakeMedicationRepository([medication]),
+      const _FakeMedicationRepository([medication]),
     ),
     act: (cubit) => cubit.loadInitial(),
     expect: () => [
@@ -39,7 +39,7 @@ void main() {
         brandName: 'Fungi Brand $index',
       ),
     );
-    final brandContains = const [
+    const brandContains = [
       Medication(id: 'brand-contains-1', brandName: 'Care Fungi'),
       Medication(id: 'brand-contains-2', brandName: 'Myco Fungi'),
     ];
@@ -59,7 +59,8 @@ void main() {
 
     cubit.search('fungi');
     await Future<void>.delayed(
-      Duration(milliseconds: AppConstants.searchDebounceMilliseconds + 30),
+      const Duration(
+          milliseconds: AppConstants.searchDebounceMilliseconds + 30),
     );
 
     expect(cubit.state.status, MedicationStatus.success);

@@ -107,29 +107,6 @@ class MedicationModel extends Medication {
     return cleaned.isEmpty ? null : cleaned;
   }
 
-  static String? _joinStrings(dynamic value) {
-    if (value is String) {
-      return _clean(value);
-    }
-
-    if (value is List) {
-      final values = value
-          .whereType<String>()
-          .map(_clean)
-          .whereType<String>()
-          .where((item) => item.isNotEmpty)
-          .toList();
-
-      if (values.isEmpty) {
-        return null;
-      }
-
-      return values.join('\n\n');
-    }
-
-    return null;
-  }
-
   static String? _joinSectionStrings(
     dynamic value,
     List<String> headings,

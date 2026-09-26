@@ -11,7 +11,7 @@ class AppLocalizationsId extends AppLocalizations {
   String get tagline => 'Temukan. Periksa. Pastikan.';
 
   @override
-  String get searchHint => 'Cari...';
+  String get searchHint => 'Cari nama atau indikasi...';
 
   @override
   String get clearSearch => 'Hapus pencarian';
@@ -141,27 +141,37 @@ class AppLocalizationsId extends AppLocalizations {
 
   @override
   String get routeOral => 'Oral';
+
   @override
   String get routeTopical => 'Topikal';
+
   @override
-  String get routeCutaneous => 'Pada kulit';
+  String get routeCutaneous => 'Pada Kulit';
+
   @override
   String get routeTransdermal => 'Transdermal';
+
   @override
   String get routeInhalation => 'Inhalasi';
+
   @override
   String get routeOphthalmic => 'Mata';
+
   @override
   String get routeNasal => 'Hidung';
+
   @override
-  String get routeIntravenous => 'Injeksi intravena';
+  String get routeIntravenous => 'Injeksi Intravena';
+
   @override
-  String get routeIntramuscular => 'Injeksi intramuskular';
+  String get routeIntramuscular => 'Injeksi Intramuskular';
+
   @override
-  String get routeSubcutaneous => 'Injeksi subkutan';
+  String get routeSubcutaneous => 'Injeksi Subkutan';
+
   @override
   String get routeRectal => 'Rektal';
 
   @override
-  String get translationUnavailable => 'Terjemahan tidak tersedia. Teks asli bahasa Inggris ditampilkan.';
+  String get translationUnavailable => 'Beberapa konten ditampilkan dalam bahasa aslinya karena tidak dapat diterjemahkan.';
 }

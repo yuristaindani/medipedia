@@ -13,7 +13,9 @@ void main() {
 
     await tester.pumpWidget(
       localizedTestApp(
-        home: Scaffold(body: MedicationCard(medication: testMedication)),
+        home: const Scaffold(
+          body: MedicationCard(medication: testMedication),
+        ),
         favoritesCubit: favoritesCubit,
       ),
     );

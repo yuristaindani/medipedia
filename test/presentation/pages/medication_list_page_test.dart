@@ -41,4 +41,32 @@ void main() {
     await tester.pump(const Duration(milliseconds: 150));
     await tester.pumpAndSettle();
   });
+
+  testWidgets('empty results can be pulled to refresh', (tester) async {
+    final repository = MemoryMedicationRepository(const []);
+    final medicationCubit = await loadedMedicationCubit(repository: repository);
+    final favoritesCubit = await loadedFavoritesCubit();
+    final localeCubit = await englishLocaleCubit();
+    addTearDown(medicationCubit.close);
+    addTearDown(favoritesCubit.close);
+    addTearDown(localeCubit.close);
+
+    await tester.pumpWidget(
+      localizedTestApp(
+        home: const MedicationListPage(),
+        medicationCubit: medicationCubit,
+        favoritesCubit: favoritesCubit,
+        localeCubit: localeCubit,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('No medications found'), findsOneWidget);
+    expect(repository.requestCount, 1);
+
+    await tester.drag(find.byType(ListView), const Offset(0, 400));
+    await tester.pumpAndSettle();
+
+    expect(repository.requestCount, 2);
+  });
 }
